@@ -4,7 +4,7 @@ from picamera2 import Picamera2
 
 from navigation import NavigationController, NavigationPath
 from cameraScreen import CameraScreen
-from CameraScreenController import CameraScreenController
+from cameraScreenController import CameraScreenController
 from settingsScreen import SettingsScreen
 from settingsController import SettingsController
 from galleryScreen import GalleryScreen
