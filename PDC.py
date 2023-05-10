@@ -1,3 +1,5 @@
+import subprocess
+import re
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import QThreadPool
 from picamera2 import Picamera2
@@ -16,7 +18,16 @@ from gpioService import GPIOService
 from settings import Settings
 
 import os
-os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")
+#os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")
+
+def getSensor():
+	result = subprocess.run(["python", "test_camera_format.py", "--width", "1920", "--height", "1080"], stderr=subprocess.PIPE)
+	str = result.stderr.decode("utf-8")
+	sensor = re.search("/base/soc/i2c[0-9]mux/i2c@[0-9]/(\w+)", str)
+	if sensor == None:
+        	print("can't find sensor")
+	        exit(-1)
+	return sensor.group(1)
 
     
 class PiCamera:
@@ -32,7 +43,7 @@ class PiCamera:
         self.win.setFixedSize(480, 320)
         self.settings = Settings()
         self.settings.read()
-        self.camera = Camera(Picamera2(), settings=self.settings)
+        self.camera = Camera(Picamera2(), settings=self.settings, sensor=getSensor())
         fileService = FileService("~/Pictures/pi_dslr")
         self.navController = NavigationController(self.win)
         cameraScreenControllerArgs = [self.navController, self.threadPool, self.camera]

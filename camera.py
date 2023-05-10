@@ -6,11 +6,33 @@ from picamera2.encoders import H264Encoder
 from picamera2.outputs import FfmpegOutput
 from time import time
 from settings import Settings
-from  util import pathCheck
+from util import pathCheck
+
+sensor_formats = {
+    "imx708": [
+        (4608, 2592),
+        (2304, 1296),
+        (1536, 864)
+    ],
+    "imx477": [
+        (4056, 3040),
+        (2028, 1080)
+    ],
+    "unknown": [
+        (2592, 1944),
+        (1296, 972)
+    ]
+}
 
 class Camera:
-    def __init__(self, camera: Picamera2, settings: Settings):
+    def __init__(self, camera: Picamera2, settings: Settings, sensor: str="unknown"):
         self.camera = camera
+        if sensor in sensor_formats:
+            self.sensor = sensor
+        else:
+            print("unknown sensor")
+            self.sensor = "unknown"
+        
         try:
             self.camera.set_controls({"AfMode": controls.AfModeEnum.Manual})
             self.autofocusEnabled = True
@@ -18,11 +40,11 @@ class Camera:
             self.autofocusEnabled = False
         self.settings = settings
         self.stillConfig = camera.create_video_configuration(
-            main={"size": (4608, 2592)},
+            main={"size": sensor_formats[self.sensor][0]},
             lores={"size": (384, 216)},
             transform=libcamera.Transform(),
             colour_space=libcamera.ColorSpace.Sycc(),
-            buffer_count=4,
+            buffer_count=1,
             display="lores",
             encode="main",
             queue=True
@@ -44,6 +66,7 @@ class Camera:
 
         self.__setVideoPath("videoPath", settings.get("videoPath"))
         settings.subscribe("videoPath", self.__setVideoPath)
+       
 
     def __setImagePath(self, key: str, imagePath: str):
         self.imagePath = path.expanduser(imagePath)
