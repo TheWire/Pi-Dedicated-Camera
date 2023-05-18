@@ -62,7 +62,7 @@ class PiCamera:
     def start(self):
         self.navController.navigate("CAMERA_SCREEN")
         self.camera.start()
-        # self.win.showFullScreen()
+        self.win.showFullScreen()
         self.win.show()
         self.app.exec()
 

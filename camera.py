@@ -41,10 +41,10 @@ class Camera:
         self.settings = settings
         self.stillConfig = camera.create_video_configuration(
             main={"size": sensor_formats[self.sensor][0]},
-            lores={"size": (384, 216)},
+            lores={"size": (480, 270)},
             transform=libcamera.Transform(),
             colour_space=libcamera.ColorSpace.Sycc(),
-            buffer_count=1,
+            buffer_count=2,
             display="lores",
             encode="main",
             queue=True
