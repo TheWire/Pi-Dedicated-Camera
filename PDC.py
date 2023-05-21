@@ -21,13 +21,13 @@ import os
 #os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")
 
 def getSensor():
-	result = subprocess.run(["python", "test_camera_format.py", "--width", "1920", "--height", "1080"], stderr=subprocess.PIPE)
-	str = result.stderr.decode("utf-8")
-	sensor = re.search("/base/soc/i2c[0-9]mux/i2c@[0-9]/(\w+)", str)
-	if sensor == None:
-        	print("can't find sensor")
-	        exit(-1)
-	return sensor.group(1)
+    result = subprocess.run(["python", "test_camera_format.py", "--width", "1920", "--height", "1080"], stderr=subprocess.PIPE)
+    str = result.stderr.decode("utf-8")
+    sensor = re.search("/base/soc/i2c[0-9]mux/i2c@[0-9]/(\w+)", str)
+    if sensor == None:
+        print("can't find sensor")
+        exit(-1)
+    return sensor.group(1)
 
     
 class PiCamera:
