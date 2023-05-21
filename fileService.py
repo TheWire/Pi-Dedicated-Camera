@@ -1,14 +1,29 @@
 import os
+from settings import Settings
 from util import pathCheck
 
 class FileService:
 
-    def __init__(self, dirPath: str):
-        self.dirPath = os.path.expanduser(dirPath)
+    def __init__(self, settings: Settings):
+        self.settings = settings
 
-    def dirContents(self):
-        pathCheck(self.dirPath)
-        contents = os.listdir(self.dirPath)
+        self.__setImagePath("imagePath", settings.get("imagePath"))
+        settings.subscribe("imagePath", self.__setImagePath)
+
+        self.__setVideoPath("videoPath", settings.get("videoPath"))
+        settings.subscribe("videoPath", self.__setVideoPath)
+       
+
+    def __setImagePath(self, key: str, imagePath: str):
+        self.imagePath = os.path.expanduser(imagePath)
+        pathCheck(self.imagePath)
+
+    def __setVideoPath(self, key:str, videoPath: str):
+        self.videoPath = os.path.expanduser(videoPath)
+        pathCheck(self.videoPath)
+
+    def imageDirContents(self):
+        contents = os.listdir(self.imagePath)
         contents = filter(self.checkExtension, contents)
         contents = list(map(self.getDescriptor, contents))
         contents.sort(reverse=True)
@@ -20,9 +35,9 @@ class FileService:
         if(extension == ".jpeg"): return True
         return False
 
-    def getDescriptor(self, file: str):
+    def getImageDescriptor(self, file: str):
         try:
-            filePath = os.path.join(self.dirPath, file)
+            filePath = os.path.join(self.videoPath, file)
             created = os.path.getmtime(filePath)
             return FileDescriptor(filePath, created)
         except Exception as e:
