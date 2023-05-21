@@ -1,4 +1,5 @@
 import os
+from util import pathCheck
 
 class FileService:
 
@@ -6,6 +7,7 @@ class FileService:
         self.dirPath = os.path.expanduser(dirPath)
 
     def dirContents(self):
+        pathCheck(self.dirPath)
         contents = os.listdir(self.dirPath)
         contents = filter(self.checkExtension, contents)
         contents = list(map(self.getDescriptor, contents))
