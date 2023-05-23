@@ -30,7 +30,7 @@ class GalleryController(Controller):
 
     def getPageContents(self):
         if len(self.imageFiles) == 0:
-            self.imageFiles = self.fileService.dirContents()
+            self.imageFiles = self.fileService.imageDirContents()
             self.numPages = int(math.ceil(len(self.imageFiles) / self.filesPerPage))
         imageStart = self.page * self.filesPerPage
         self.pageContents = self.imageFiles[imageStart:imageStart + self.filesPerPage]
