@@ -44,7 +44,7 @@ class PiCamera:
         self.settings = Settings()
         self.settings.read()
         self.camera = Camera(Picamera2(), settings=self.settings, sensor=getSensor())
-        fileService = FileService("~/Pictures/pi_dslr")
+        fileService = FileService(settings=self.settings)
         self.navController = NavigationController(self.win)
         cameraScreenControllerArgs = [self.navController, self.threadPool, self.camera]
         cameraScreen = NavigationPath(widget = CameraScreen, widgetArgs=[self.size.height(), self.size.width(), self.gpioService], controller=CameraScreenController, controllerArgs=cameraScreenControllerArgs)
