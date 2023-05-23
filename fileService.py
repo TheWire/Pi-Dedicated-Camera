@@ -25,7 +25,7 @@ class FileService:
     def imageDirContents(self):
         contents = os.listdir(self.imagePath)
         contents = filter(self.checkExtension, contents)
-        contents = list(map(self.getDescriptor, contents))
+        contents = list(map(self.getImageDescriptor, contents))
         contents.sort(reverse=True)
         return contents
 
@@ -37,7 +37,7 @@ class FileService:
 
     def getImageDescriptor(self, file: str):
         try:
-            filePath = os.path.join(self.videoPath, file)
+            filePath = os.path.join(self.imagePath, file)
             created = os.path.getmtime(filePath)
             return FileDescriptor(filePath, created)
         except Exception as e:
