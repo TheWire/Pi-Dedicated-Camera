@@ -97,3 +97,4 @@ class CameraScreen(Screen):
 
     def end(self):
         self.gpioClose()
+        self.cameraPreview.cleanup()
