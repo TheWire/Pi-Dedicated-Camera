@@ -23,7 +23,6 @@ import os
 def getSensor():
     result = subprocess.run(["python", "test_camera_format.py", "--width", "1920", "--height", "1080"], stderr=subprocess.PIPE)
     str = result.stderr.decode("utf-8")
-    print(str)
     sensor = re.search("/base/soc/i2c[0-9]mux/i2c@[0-9]/(\w+)", str)
     # for pi 5
     if sensor == None: sensor = re.search("/base/axi/pcie@\d+/rp1/i2c@\d+/(\w+)", str)
