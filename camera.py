@@ -99,6 +99,7 @@ class Camera:
 
 
     def __record(self, callback=None):
+        pathCheck(self.videoPath)
         def startRecord(job):
             self.camera.wait(job)
             self.switchAutofocusMode(state=True)
