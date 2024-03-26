@@ -12,5 +12,6 @@ class Runnable(QRunnable):
 
 
 def pathCheck(dirPath: str):
+        print(dirPath)
         if not path.exists(dirPath):
             mkdir(dirPath)
